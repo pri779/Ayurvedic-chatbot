@@ -1,5 +1,7 @@
-from flask import Flask, request
+from flask import Flask, request, make_response
 import pandas as pd
+from xhtml2pdf import pisa
+from io import BytesIO
 
 app = Flask(__name__)
 data = pd.read_csv("ayurvedic_data.csv")
@@ -175,11 +177,52 @@ def result():
 
         html += f"<h2>Season: {row['Season']}</h2><hr>"
 
+    # Add PDF download button form
+    html += f"""
+    <form action="/download" method="POST">
+        <input type="hidden" name="disease" value="{disease}">
+        <input type="hidden" name="age" value="{age}">
+        <button type="submit" style="margin-top:20px;padding:10px 15px;">📄 Download as PDF</button>
+    </form>
+    """
+
     html += "</body></html>"
     return html
+
+@app.route('/download', methods=['POST'])
+def download():
+    disease = request.form['disease'].strip().lower()
+    age = int(request.form['age'])
+
+    matches = data[
+        (data['Disease'].str.lower() == disease) &
+        data['Age Group'].apply(lambda x: check_age_group(x, age))
+    ]
+
+    if matches.empty:
+        return "<h3>No remedy found for your inputs.</h3>"
+
+    html = "<h1>Ayurvedic Remedy</h1>"
+    for _, row in matches.iterrows():
+        html += f"<p><b>Disease:</b> {row['Disease']}</p>"
+        html += f"<p><b>Season:</b> {row['Season']}</p><br>"
+        html += "<b>Remedy Steps:</b><br>"
+        steps = row['Remedies'].split('.')
+        for i, step in enumerate(steps):
+            if step.strip():
+                html += f"<p>Step {i+1}: {step.strip()}</p>"
+
+    result = BytesIO()
+    pisa_status = pisa.CreatePDF(html, dest=result)
+    if pisa_status.err:
+        return "Failed to create PDF", 500
+
+    response = make_response(result.getvalue())
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = "attachment; filename=remedy.pdf"
+    return response
 
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
-
