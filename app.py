@@ -2,6 +2,8 @@ from flask import Flask, request, make_response
 import pandas as pd
 from xhtml2pdf import pisa
 from io import BytesIO
+import re
+import os
 
 app = Flask(__name__)
 data = pd.read_csv("ayurvedic_data.csv")
@@ -121,70 +123,97 @@ def result():
     if matches.empty:
         return "<h2 style='color:red;'>Sorry, no remedy found for the given disease and age.</h2>"
 
-    html = """
+    html = f"""
     <html>
     <head>
         <title>Ayurvedic Remedy</title>
         <style>
-            body {
-                background: #f0f9f4;
-                font-family: Arial, sans-serif;
-                padding: 30px;
-                color: #333;
-            }
-            h2 { color: #2e7d32; }
-            img {
-                width: 150px;
-                height: 150px;
-                border-radius: 10px;
-                margin: 10px;
-            }
-            .remedy-step {
-                background: #ffffff;
-                border-left: 5px solid #4caf50;
-                margin: 10px 0;
-                padding: 10px;
-                border-radius: 4px;
-            }
-            .refresh {
-                background: #4caf50;
+            body {{
+                background: #e8f5e9;
+                font-family: 'Segoe UI', sans-serif;
+                padding: 40px;
+                color: #2e2e2e;
+            }}
+            .header {{
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                margin-bottom: 20px;
+            }}
+            .header form, .header a {{
+                display: inline-block;
+            }}
+            .btn {{
+                padding: 10px 20px;
+                background-color: #388e3c;
                 color: white;
-                padding: 10px 15px;
-                border-radius: 5px;
                 text-decoration: none;
-                position: absolute;
-                top: 20px;
-                right: 20px;
-            }
+                border-radius: 6px;
+                font-size: 15px;
+                border: none;
+                cursor: pointer;
+            }}
+            .btn:hover {{
+                background-color: #2e7d32;
+            }}
+            h1 {{
+                color: #1b5e20;
+                font-size: 28px;
+                margin-bottom: 10px;
+            }}
+            h2 {{
+                color: #33691e;
+                margin-top: 30px;
+            }}
+            .remedy-step {{
+                background: #ffffff;
+                border-left: 6px solid #66bb6a;
+                margin: 10px 0;
+                padding: 12px;
+                border-radius: 5px;
+                box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            }}
+            .images img {{
+                width: 130px;
+                height: 130px;
+                object-fit: cover;
+                border-radius: 10px;
+                margin-right: 10px;
+                margin-top: 10px;
+            }}
         </style>
     </head>
     <body>
-    <a class='refresh' href='/'>🔄 Refresh</a>
+
+    <div class="header">
+        <a href="/" class="btn">🔄 Refresh</a>
+        <form action="/download" method="POST">
+            <input type="hidden" name="disease" value="{disease}">
+            <input type="hidden" name="age" value="{age}">
+            <button type="submit" class="btn">📄 Download as PDF</button>
+        </form>
+    </div>
+
     <h1>Ayurvedic Remedy</h1>
     """
 
     for _, row in matches.iterrows():
-        html += "<h2>Images:</h2>"
-        images = row['Image URL'].split(';')
-        for img in images:
-            html += f"<img src='{img.strip()}' />"
+        html += f"<p><strong>Disease:</strong> {row['Disease'].title()}</p>"
+        html += f"<p><strong>Season:</strong> {row['Season']}</p>"
 
         html += "<h2>Remedy Steps:</h2>"
-        steps = row['Remedies'].split('.')
-        for i, step in enumerate(steps):
-            if step.strip():
-                html += f"<div class='remedy-step'>Step {i+1}: {step.strip().replace('1)', '').strip()}</div>"
+        steps = re.split(r'\d\)', row['Remedies'])
+        step_no = 1
+        for step in steps:
+            cleaned = step.strip()
+            if cleaned:
+                html += f"<div class='remedy-step'>Step {step_no}: {cleaned}</div>"
+                step_no += 1
 
-        html += f"<h2>Season: {row['Season']}</h2><hr>"
-
-    # Add PDF download button form
-    html += f"""
-    <form action="/download" method="POST">
-        <input type="hidden" name="disease" value="{disease}">
-        <input type="hidden" name="age" value="{age}">
-        <button type="submit" style="margin-top:20px;padding:10px 15px;">📄 Download as PDF</button>
-    </form>
-    """
+        html += "<h2>Ingredient Images:</h2><div class='images'>"
+        for img in row['Image URL'].split(';'):
+            html += f"<img src='{img.strip()}' alt='Ingredient' />"
+        html += "</div>"
 
     html += "</body></html>"
     return html
@@ -207,10 +236,13 @@ def download():
         html += f"<p><b>Disease:</b> {row['Disease']}</p>"
         html += f"<p><b>Season:</b> {row['Season']}</p><br>"
         html += "<b>Remedy Steps:</b><br>"
-        steps = row['Remedies'].split('.')
-        for i, step in enumerate(steps):
-            if step.strip():
-                html += f"<p>Step {i+1}: {step.strip()}</p>"
+        steps = re.split(r'\d\)', row['Remedies'])
+        step_no = 1
+        for step in steps:
+            cleaned = step.strip()
+            if cleaned:
+                html += f"<p>Step {step_no}: {cleaned}</p>"
+                step_no += 1
 
     result = BytesIO()
     pisa_status = pisa.CreatePDF(html, dest=result)
@@ -223,6 +255,5 @@ def download():
     return response
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
