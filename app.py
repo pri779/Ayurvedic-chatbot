@@ -129,7 +129,7 @@ def result():
         <title>Ayurvedic Remedy</title>
         <style>
             body {{
-                background: #e8f5e9;
+                background: #f1fdf4;
                 font-family: 'Segoe UI', sans-serif;
                 padding: 40px;
                 color: #2e2e2e;
@@ -140,46 +140,47 @@ def result():
                 gap: 10px;
                 margin-bottom: 20px;
             }}
-            .header form, .header a {{
-                display: inline-block;
-            }}
             .btn {{
-                padding: 10px 20px;
-                background-color: #388e3c;
+                padding: 10px 18px;
+                background-color: #2e7d32;
                 color: white;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: 500;
                 text-decoration: none;
-                border-radius: 6px;
-                font-size: 15px;
                 border: none;
                 cursor: pointer;
+                transition: background-color 0.2s ease-in-out;
             }}
             .btn:hover {{
-                background-color: #2e7d32;
+                background-color: #1b5e20;
             }}
             h1 {{
                 color: #1b5e20;
                 font-size: 28px;
-                margin-bottom: 10px;
+                margin-bottom: 5px;
             }}
             h2 {{
                 color: #33691e;
                 margin-top: 30px;
+                font-size: 20px;
+                border-bottom: 1px solid #cceccc;
+                padding-bottom: 5px;
             }}
             .remedy-step {{
                 background: #ffffff;
-                border-left: 6px solid #66bb6a;
                 margin: 10px 0;
-                padding: 12px;
-                border-radius: 5px;
-                box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+                padding: 12px 15px;
+                border-left: 5px solid #66bb6a;
+                border-radius: 6px;
+                box-shadow: 0px 1px 4px rgba(0,0,0,0.08);
             }}
             .images img {{
                 width: 130px;
                 height: 130px;
                 object-fit: cover;
                 border-radius: 10px;
-                margin-right: 10px;
-                margin-top: 10px;
+                margin: 10px 10px 0 0;
             }}
         </style>
     </head>
@@ -202,7 +203,7 @@ def result():
         html += f"<p><strong>Season:</strong> {row['Season']}</p>"
 
         html += "<h2>Remedy Steps:</h2>"
-        steps = re.split(r'\d\)', row['Remedies'])
+        steps = re.split(r'\d\)|\.', row['Remedies'])  # split on 1) or .
         step_no = 1
         for step in steps:
             cleaned = step.strip()
@@ -236,7 +237,7 @@ def download():
         html += f"<p><b>Disease:</b> {row['Disease']}</p>"
         html += f"<p><b>Season:</b> {row['Season']}</p><br>"
         html += "<b>Remedy Steps:</b><br>"
-        steps = re.split(r'\d\)', row['Remedies'])
+        steps = re.split(r'\d\)|\.', row['Remedies'])
         step_no = 1
         for step in steps:
             cleaned = step.strip()
