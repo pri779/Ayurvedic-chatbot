@@ -24,92 +24,79 @@ def index():
     <html>
     <head>
         <title>Ayurvedic Chatbot</title>
+        <link href='https://fonts.googleapis.com/css2?family=Inter&display=swap' rel='stylesheet'>
         <style>
             body {
-                background-image: url('https://img.freepik.com/premium-photo/harmony-tradition-embracing-indian-ayurveda-through-minimalistic-background-images-powerpoi_983420-27736.jpg');
+                background-image: url('https://img.freepik.com/free-photo/ayurvedic-medicine-natural-herbal-leaves-powder-wooden-surface-background-ai-generated_123827-24934.jpg');
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
-                margin: 0;
-                padding: 0;
                 height: 100vh;
+                margin: 0;
+                font-family: 'Inter', sans-serif;
                 display: flex;
-                align-items: center;
                 justify-content: center;
-                font-family: Arial, sans-serif;
+                align-items: center;
             }
             .overlay {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.6);
-                z-index: 0;
-            }
-            .content {
-                position: relative;
-                z-index: 1;
+                background: rgba(0, 0, 0, 0.65);
+                padding: 40px;
+                border-radius: 15px;
                 text-align: center;
-                max-width: 400px;
-                width: 90%;
-                padding: 30px;
-                background-color: rgba(255, 255, 255, 0.1);
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                color: white;
             }
-            .quote {
-                font-style: italic;
-                font-size: 1.1em;
-                color: #d1e0e0;
-                margin-bottom: 20px;
-            }
-            h1 {
-                color: #e74c3c;
-                font-size: 1.8em;
-                margin-bottom: 15px;
-            }
-            input[type="text"], input[type="number"] {
+            input {
                 padding: 12px;
-                margin: 8px 0;
-                width: calc(100% - 24px);
-                font-size: 1em;
+                width: 250px;
+                margin: 10px 0;
                 border-radius: 5px;
-                border: 1px solid #ddd;
-                box-sizing: border-box;
+                border: none;
+                font-size: 16px;
             }
             button {
-                padding: 12px 20px;
-                width: 100%;
-                color: white;
+                padding: 12px 25px;
                 background-color: #e74c3c;
                 border: none;
-                border-radius: 5px;
+                color: white;
+                border-radius: 6px;
                 cursor: pointer;
-                font-size: 1em;
-                margin-top: 15px;
-                box-sizing: border-box;
+                font-size: 16px;
             }
-            button:hover {
-                background-color: #c0392b;
+            .loader {
+                display: none;
+                margin-top: 15px;
+                color: #fff;
             }
         </style>
     </head>
     <body>
-        <div class="overlay"></div>
-        <div class="content">
-            <div class="quote">"Health is the greatest gift, contentment the greatest wealth." - Buddha</div>
-            <h1>Ayurvedic Chatbot</h1>
-            <form action="/result" method="POST">
-                <input type="text" name="disease" placeholder="Enter disease" required>
-                <input type="number" name="age" placeholder="Enter age" required>
+        <div class="overlay">
+            <h3>"Health is the greatest gift, contentment the greatest wealth." - Buddha</h3>
+            <h1 style='color:#ff7050;'>Ayurvedic Chatbot</h1>
+            <form action="/result" method="POST" onsubmit="showLoader()">
+                <input type="text" name="disease" id="disease" placeholder="Enter disease" required>
+                <button type="button" onclick="startVoice()">🎤</button><br>
+                <input type="number" name="age" placeholder="Enter age" required><br>
                 <button type="submit">Get Remedy</button>
             </form>
+            <div class="loader" id="loader">⏳ Loading remedy...</div>
         </div>
+        <script>
+            function startVoice() {
+                var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'en-IN';
+                recognition.start();
+                recognition.onresult = function(event) {
+                    document.getElementById('disease').value = event.results[0][0].transcript;
+                };
+            }
+            function showLoader() {
+                document.getElementById('loader').style.display = 'block';
+            }
+        </script>
     </body>
     </html>
     """
-
 @app.route('/result', methods=['POST'])
 def result():
     disease = request.form['disease'].strip().lower()
@@ -127,98 +114,80 @@ def result():
     <html>
     <head>
         <title>Ayurvedic Remedy</title>
+        <link href='https://fonts.googleapis.com/css2?family=Inter&display=swap' rel='stylesheet'>
         <style>
             body {{
-                background: #f1fdf4;
-                font-family: 'Segoe UI', sans-serif;
-                padding: 40px;
-                color: #2e2e2e;
+                background: url('https://img.freepik.com/free-photo/top-view-natural-ayurvedic-herbs-table_23-2149187646.jpg') no-repeat center center fixed;
+                background-size: cover;
+                font-family: 'Inter', sans-serif;
+                padding: 50px;
             }}
-            .header {{
+            .box {{
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 12px;
+                padding: 30px;
+                max-width: 800px;
+                margin: auto;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            }}
+            .header-buttons {{
                 display: flex;
                 justify-content: flex-end;
                 gap: 10px;
                 margin-bottom: 20px;
             }}
             .btn {{
-                padding: 10px 18px;
-                background-color: #2e7d32;
+                background: #2e7d32;
                 color: white;
+                padding: 10px 20px;
                 border-radius: 25px;
-                font-size: 14px;
-                font-weight: 500;
                 text-decoration: none;
+                font-weight: bold;
                 border: none;
-                cursor: pointer;
-                transition: background-color 0.2s ease-in-out;
             }}
-            .btn:hover {{
-                background-color: #1b5e20;
-            }}
-            h1 {{
-                color: #1b5e20;
-                font-size: 28px;
-                margin-bottom: 5px;
-            }}
-            h2 {{
-                color: #33691e;
-                margin-top: 30px;
-                font-size: 20px;
-                border-bottom: 1px solid #cceccc;
-                padding-bottom: 5px;
-            }}
+            h1 {{ color: #1b5e20; }}
             .remedy-step {{
-                background: #ffffff;
-                margin: 10px 0;
-                padding: 12px 15px;
+                background: #f1f8e9;
                 border-left: 5px solid #66bb6a;
+                margin: 10px 0;
+                padding: 10px 15px;
                 border-radius: 6px;
-                box-shadow: 0px 1px 4px rgba(0,0,0,0.08);
             }}
             .images img {{
                 width: 130px;
                 height: 130px;
-                object-fit: cover;
+                margin: 10px;
                 border-radius: 10px;
-                margin: 10px 10px 0 0;
+                object-fit: cover;
             }}
         </style>
     </head>
     <body>
-
-    <div class="header">
-        <a href="/" class="btn">🔄 Refresh</a>
-        <form action="/download" method="POST">
-            <input type="hidden" name="disease" value="{disease}">
-            <input type="hidden" name="age" value="{age}">
-            <button type="submit" class="btn">📄 Download as PDF</button>
-        </form>
-    </div>
-
-    <h1>Ayurvedic Remedy</h1>
+        <div class='box'>
+            <div class="header-buttons">
+                <a href="/" class="btn">🔙 Back</a>
+                <form action="/download" method="POST">
+                    <input type="hidden" name="disease" value="{disease}">
+                    <input type="hidden" name="age" value="{age}">
+                    <button type="submit" class="btn">📄 Download PDF</button>
+                </form>
+            </div>
+            <h1>Ayurvedic Remedy</h1>
+            <p><strong>Disease:</strong> {disease.title()}</p>
+            <p><strong>Season:</strong> {matches.iloc[0]['Season']}</p>
+            <h2>Remedy Steps:</h2>
     """
+    step_no = 1
+    for step in re.split(r'\d\)|\.', matches.iloc[0]['Remedies']):
+        if step.strip():
+            html += f"<div class='remedy-step'>Step {step_no}: {step.strip()}</div>"
+            step_no += 1
 
-    for _, row in matches.iterrows():
-        html += f"<p><strong>Disease:</strong> {row['Disease'].title()}</p>"
-        html += f"<p><strong>Season:</strong> {row['Season']}</p>"
-
-        html += "<h2>Remedy Steps:</h2>"
-        steps = re.split(r'\d\)|\.', row['Remedies'])  # split on 1) or .
-        step_no = 1
-        for step in steps:
-            cleaned = step.strip()
-            if cleaned:
-                html += f"<div class='remedy-step'>Step {step_no}: {cleaned}</div>"
-                step_no += 1
-
-        html += "<h2>Ingredient Images:</h2><div class='images'>"
-        for img in row['Image URL'].split(';'):
-            html += f"<img src='{img.strip()}' alt='Ingredient' />"
-        html += "</div>"
-
-    html += "</body></html>"
+    html += "<h2>Ingredient Images:</h2><div class='images'>"
+    for img in matches.iloc[0]['Image URL'].split(';'):
+        html += f"<img src='{img.strip()}' alt='ingredient'/>"
+    html += "</div></div></body></html>"
     return html
-
 @app.route('/download', methods=['POST'])
 def download():
     disease = request.form['disease'].strip().lower()
@@ -232,18 +201,16 @@ def download():
     if matches.empty:
         return "<h3>No remedy found for your inputs.</h3>"
 
-    html = "<h1>Ayurvedic Remedy</h1>"
-    for _, row in matches.iterrows():
-        html += f"<p><b>Disease:</b> {row['Disease']}</p>"
-        html += f"<p><b>Season:</b> {row['Season']}</p><br>"
-        html += "<b>Remedy Steps:</b><br>"
-        steps = re.split(r'\d\)|\.', row['Remedies'])
-        step_no = 1
-        for step in steps:
-            cleaned = step.strip()
-            if cleaned:
-                html += f"<p>Step {step_no}: {cleaned}</p>"
-                step_no += 1
+    html = f"<h1 style='color:green;'>Ayurvedic Remedy</h1>"
+    html += f"<p><strong>Disease:</strong> {matches.iloc[0]['Disease']}</p>"
+    html += f"<p><strong>Season:</strong> {matches.iloc[0]['Season']}</p><br>"
+    html += "<b>Remedy Steps:</b><br>"
+    step_no = 1
+    for step in re.split(r'\d\)|\.', matches.iloc[0]['Remedies']):
+        if step.strip():
+            html += f"<p>Step {step_no}: {step.strip()}</p>"
+            step_no += 1
+    html += "<p><i>*Note: Ingredient images are available only on the website.</i></p>"
 
     result = BytesIO()
     pisa_status = pisa.CreatePDF(html, dest=result)
@@ -254,7 +221,6 @@ def download():
     response.headers["Content-Type"] = "application/pdf"
     response.headers["Content-Disposition"] = "attachment; filename=remedy.pdf"
     return response
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
