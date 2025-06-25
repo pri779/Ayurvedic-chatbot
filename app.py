@@ -27,7 +27,7 @@ def index():
         <link href='https://fonts.googleapis.com/css2?family=Inter&display=swap' rel='stylesheet'>
         <style>
             body {
-                background-image: url('https://img.freepik.com/free-photo/ayurvedic-medicine-natural-herbal-leaves-powder-wooden-surface-background-ai-generated_123827-24934.jpg');
+                background-image: url('https://img.freepik.com/premium-photo/harmony-tradition-embracing-indian-ayurveda-through-minimalistic-background-images-powerpoi_983420-27736.jpg');
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -117,7 +117,7 @@ def result():
         <link href='https://fonts.googleapis.com/css2?family=Inter&display=swap' rel='stylesheet'>
         <style>
             body {{
-                background: url('https://img.freepik.com/free-photo/top-view-natural-ayurvedic-herbs-table_23-2149187646.jpg') no-repeat center center fixed;
+                background: url(https://static.vecteezy.com/system/resources/thumbnails/015/933/627/small/chyavanprash-or-chyawanprash-is-widely-consumed-in-india-as-a-dietary-ayurvedic-supplement-free-photo.jpg') no-repeat center center fixed;
                 background-size: cover;
                 font-family: 'Inter', sans-serif;
                 padding: 50px;
