@@ -18,7 +18,10 @@ def check_age_group(age_group_str, age):
         return min_age <= age <= max_age
     return False
 
-    <html>
+@app.route('/')
+def index():
+    return """
+        <html>
     <head>
         <title>Ayurvedic Chatbot</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter&family=Dancing+Script&display=swap" rel="stylesheet">
@@ -168,6 +171,9 @@ input[type="number"] {
         </script>
     </body>
     </html>
+
+    """
+
 
 
 
