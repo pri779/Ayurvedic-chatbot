@@ -18,9 +18,6 @@ def check_age_group(age_group_str, age):
         return min_age <= age <= max_age
     return False
 
-@app.route('/')
-def index():
-    return """
     <html>
     <head>
         <title>Ayurvedic Chatbot</title>
@@ -41,13 +38,17 @@ def index():
             }
 
             .overlay {
-                background-color: rgba(0, 0, 0, 0.6);
-                padding: 40px 30px;
-                border-radius: 18px;
-                color: white;
-                text-align: left;
-                width: 430px;
-            }
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 40px 30px;
+    border-radius: 18px;
+    color: white;
+    text-align: left;
+    width: 430px;
+    min-height: 440px;     /* ✅ more space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
             .quote {
                 font-family: 'Dancing Script', cursive;
@@ -62,22 +63,39 @@ def index():
                 margin-bottom: 25px;
             }
 
-            form {
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;               /* ✅ more gap between fields */
+    align-items: center;
+}
 
-            .input-row {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
+
+
+ .input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 280px;
+    margin-left: 10px;  /* ✅ slight right shift */
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"],
+input[type="number"] {
+    flex: 1;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 0 4px rgba(255,255,255,0.2);
+}
+
+
 
             input[type="text"], input[type="number"] {
                 width: 260px;
-                padding: 12px;
+                padding: 11px;
                 font-size: 14px;
                 border-radius: 6px;
                 border: none;
@@ -91,8 +109,8 @@ def index():
                 border-radius: 6px;
                 cursor: pointer;
                 color: white;
-                height: 44px;
-                width: 44px;
+                height: 40px;
+                width: 40px;
             }
 
             button[type="submit"] {
@@ -121,12 +139,15 @@ def index():
             <div class="quote">"Health is the greatest gift, contentment the greatest wealth."</div>
             <h1>Ayurvedic Chatbot</h1>
             <form action="/result" method="POST" onsubmit="showLoader()">
-                <div class="input-row">
-                    <input type="text" name="disease" id="disease" placeholder="Enter Your Disease..." required>
-                    <button type="button" class="voice-btn" onclick="startVoice()">🎤</button>
-                </div>
-                <input type="number" name="age" placeholder="Enter Your Age..." required>
-                <button type="submit">Get Remedy</button>
+                <div class="input-group">
+    <input type="text" name="disease" id="disease" placeholder="Enter Your Disease..." required>
+    <button type="button" class="voice-btn" onclick="startVoice()">🎤</button>
+</div>
+<div class="input-group">
+    <input type="number" name="age" placeholder="Enter Your Age..." required>
+</div>
+
+     <button type="submit">Get Remedy</button>
             </form>
             <div class="loader" id="loader">⏳ Loading remedy...</div>
         </div>
@@ -147,7 +168,6 @@ def index():
         </script>
     </body>
     </html>
-    """
 
 
 
