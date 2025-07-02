@@ -42,45 +42,46 @@ def index():
 
             .overlay {
                 background-color: rgba(0, 0, 0, 0.6);
-                padding: 40px;
+                padding: 40px 30px;
                 border-radius: 18px;
-                text-align: center;
                 color: white;
-                width: 400px;
+                text-align: left;
+                width: 430px;
             }
 
             .quote {
                 font-family: 'Dancing Script', cursive;
                 font-size: 20px;
+                text-align: center;
                 margin-bottom: 10px;
             }
 
             h1 {
+                text-align: center;
                 color: #ff4d4d;
-                font-size: 22px;
                 margin-bottom: 25px;
             }
 
             form {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
                 gap: 15px;
+                align-items: flex-start;
             }
 
             .input-row {
                 display: flex;
                 align-items: center;
-                justify-content: center;
                 gap: 8px;
             }
 
             input[type="text"], input[type="number"] {
-                width: 250px;
+                width: 260px;
                 padding: 12px;
                 font-size: 14px;
                 border-radius: 6px;
                 border: none;
+                box-shadow: 0 0 4px rgba(255,255,255,0.2);
             }
 
             .voice-btn {
@@ -90,10 +91,12 @@ def index():
                 border-radius: 6px;
                 cursor: pointer;
                 color: white;
+                height: 44px;
+                width: 44px;
             }
 
             button[type="submit"] {
-                width: 250px;
+                width: 180px;
                 padding: 12px;
                 background-color: #e74c3c;
                 color: white;
@@ -101,13 +104,15 @@ def index():
                 font-size: 15px;
                 border-radius: 6px;
                 cursor: pointer;
+                align-self: center;
+                margin-top: 10px;
             }
 
             .loader {
                 display: none;
-                margin-top: 12px;
                 color: white;
-                font-size: 14px;
+                margin-top: 12px;
+                text-align: center;
             }
         </style>
     </head>
@@ -143,6 +148,7 @@ def index():
     </body>
     </html>
     """
+
 
 
 @app.route('/result', methods=['POST'])
