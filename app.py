@@ -71,7 +71,7 @@ def index():
             }
             input[type="text"], input[type="number"] {
                 padding: 12px;
-                width: 100%;
+                width: 80%;
                 font-size: 15px;
                 border: none;
                 border-radius: 6px;
