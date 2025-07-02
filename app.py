@@ -39,82 +39,91 @@ def index():
                 align-items: center;
                 font-family: 'Inter', sans-serif;
             }
+
             .overlay {
-                background-color: rgba(0, 0, 0, 0.65);
-                padding: 40px 50px;
-                border-radius: 20px;
-                text-align: left;
+                background-color: rgba(0, 0, 0, 0.6);
+                padding: 40px;
+                border-radius: 18px;
+                text-align: center;
                 color: white;
-                min-width: 400px;
+                width: 400px;
             }
+
             .quote {
                 font-family: 'Dancing Script', cursive;
-                font-size: 22px;
-                margin-bottom: 15px;
-                text-align: center;
+                font-size: 20px;
+                margin-bottom: 10px;
             }
+
             h1 {
-                text-align: center;
                 color: #ff4d4d;
+                font-size: 22px;
                 margin-bottom: 25px;
-                font-size: 24px;
             }
+
             form {
                 display: flex;
                 flex-direction: column;
-                gap: 12px;
+                align-items: center;
+                gap: 15px;
             }
-            .input-group {
+
+            .input-row {
                 display: flex;
                 align-items: center;
-                gap: 10px;
+                justify-content: center;
+                gap: 8px;
             }
+
             input[type="text"], input[type="number"] {
+                width: 250px;
                 padding: 12px;
-                width: 80%;
-                font-size: 15px;
+                font-size: 14px;
+                border-radius: 6px;
+                border: none;
+            }
+
+            .voice-btn {
+                padding: 12px;
+                background-color: #e74c3c;
                 border: none;
                 border-radius: 6px;
+                cursor: pointer;
+                color: white;
             }
+
             button[type="submit"] {
-                margin-top: 12px;
+                width: 250px;
                 padding: 12px;
                 background-color: #e74c3c;
                 color: white;
                 border: none;
-                border-radius: 8px;
-                font-size: 16px;
-                cursor: pointer;
-            }
-            button.voice {
-                background-color: #e74c3c;
-                border: none;
+                font-size: 15px;
                 border-radius: 6px;
-                padding: 10px;
                 cursor: pointer;
-                color: white;
             }
+
             .loader {
                 display: none;
-                color: #fff;
-                text-align: center;
-                margin-top: 10px;
+                margin-top: 12px;
+                color: white;
+                font-size: 14px;
             }
         </style>
     </head>
     <body>
         <div class="overlay">
-            <div class="quote">"Health is the greatest gift, contentment the greatest wealth." - Buddha</div>
-            <h1>Welcome to Ayurvedic Chatbot</h1>
+            <div class="quote">"Health is the greatest gift, contentment the greatest wealth."</div>
+            <h1>Ayurvedic Chatbot</h1>
             <form action="/result" method="POST" onsubmit="showLoader()">
-                <div class="input-group">
+                <div class="input-row">
                     <input type="text" name="disease" id="disease" placeholder="Enter Your Disease..." required>
-                    <button type="button" onclick="startVoice()" class="voice">🎤</button>
+                    <button type="button" class="voice-btn" onclick="startVoice()">🎤</button>
                 </div>
                 <input type="number" name="age" placeholder="Enter Your Age..." required>
                 <button type="submit">Get Remedy</button>
             </form>
-            <div class="loader" id="loader">⏳ Please wait...</div>
+            <div class="loader" id="loader">⏳ Loading remedy...</div>
         </div>
 
         <script>
@@ -126,6 +135,7 @@ def index():
                     document.getElementById('disease').value = event.results[0][0].transcript;
                 };
             }
+
             function showLoader() {
                 document.getElementById('loader').style.display = 'block';
             }
@@ -133,6 +143,7 @@ def index():
     </body>
     </html>
     """
+
 
 @app.route('/result', methods=['POST'])
 def result():
