@@ -24,63 +24,99 @@ def index():
     <html>
     <head>
         <title>Ayurvedic Chatbot</title>
-        <link href='https://fonts.googleapis.com/css2?family=Inter&display=swap' rel='stylesheet'>
+        <link href="https://fonts.googleapis.com/css2?family=Inter&family=Dancing+Script&display=swap" rel="stylesheet">
         <style>
             body {
+                margin: 0;
+                padding: 0;
                 background-image: url('https://img.freepik.com/premium-photo/harmony-tradition-embracing-indian-ayurveda-through-minimalistic-background-images-powerpoi_983420-27736.jpg');
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
                 height: 100vh;
-                margin: 0;
-                font-family: 'Inter', sans-serif;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                font-family: 'Inter', sans-serif;
             }
             .overlay {
-                background: rgba(0, 0, 0, 0.65);
-                padding: 40px;
-                border-radius: 15px;
-                text-align: center;
+                background-color: rgba(0, 0, 0, 0.65);
+                padding: 40px 50px;
+                border-radius: 20px;
+                text-align: left;
                 color: white;
+                min-width: 400px;
             }
-            input {
+            .quote {
+                font-family: 'Dancing Script', cursive;
+                font-size: 22px;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+            h1 {
+                text-align: center;
+                color: #ff4d4d;
+                margin-bottom: 25px;
+                font-size: 24px;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .input-group {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            input[type="text"], input[type="number"] {
                 padding: 12px;
-                width: 250px;
-                margin: 10px 0;
-                border-radius: 5px;
+                width: 100%;
+                font-size: 15px;
                 border: none;
-                font-size: 16px;
+                border-radius: 6px;
             }
-            button {
-                padding: 12px 25px;
+            button[type="submit"] {
+                margin-top: 12px;
+                padding: 12px;
+                background-color: #e74c3c;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            button.voice {
                 background-color: #e74c3c;
                 border: none;
-                color: white;
                 border-radius: 6px;
+                padding: 10px;
                 cursor: pointer;
-                font-size: 16px;
+                color: white;
             }
             .loader {
                 display: none;
-                margin-top: 15px;
                 color: #fff;
+                text-align: center;
+                margin-top: 10px;
             }
         </style>
     </head>
     <body>
         <div class="overlay">
-            <h3>"Health is the greatest gift, contentment the greatest wealth." - Buddha</h3>
-            <h1 style='color:#ff7050;'>Ayurvedic Chatbot</h1>
+            <div class="quote">"Health is the greatest gift, contentment the greatest wealth." - Buddha</div>
+            <h1>Welcome to Ayurvedic Chatbot</h1>
             <form action="/result" method="POST" onsubmit="showLoader()">
-                <input type="text" name="disease" id="disease" placeholder="Enter disease" required>
-                <button type="button" onclick="startVoice()">🎤</button><br>
-                <input type="number" name="age" placeholder="Enter age" required><br>
+                <div class="input-group">
+                    <input type="text" name="disease" id="disease" placeholder="Enter Your Disease..." required>
+                    <button type="button" onclick="startVoice()" class="voice">🎤</button>
+                </div>
+                <input type="number" name="age" placeholder="Enter Your Age..." required>
                 <button type="submit">Get Remedy</button>
             </form>
-            <div class="loader" id="loader">⏳ Loading remedy...</div>
+            <div class="loader" id="loader">⏳ Please wait...</div>
         </div>
+
         <script>
             function startVoice() {
                 var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -97,6 +133,7 @@ def index():
     </body>
     </html>
     """
+
 @app.route('/result', methods=['POST'])
 def result():
     disease = request.form['disease'].strip().lower()
