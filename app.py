@@ -197,7 +197,7 @@ def result():
         <link href='https://fonts.googleapis.com/css2?family=Inter&display=swap' rel='stylesheet'>
         <style>
             body {{
-                background: url('https://static.vecteezy.com/system/resources/thumbnails/015/933/627/small/chyavanprash-or-chyawanprash-is-widely-consumed-in-india-as-a-dietary-ayurvedic-supplement-free-photo.jpg') no-repeat center center fixed;
+                background: url('https://t3.ftcdn.net/jpg/12/15/65/08/360_F_1215650842_rsCDeAP7zfX9go3kQTcWYq8fjyVhfhQX.jpgs') no-repeat center center fixed;
                 background-size: cover;
                 font-family: 'Inter', sans-serif;
                 padding: 50px;
