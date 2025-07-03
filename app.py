@@ -191,47 +191,83 @@ def result():
         return "<h2 style='color:red;'>Sorry, no remedy found for the given disease and age.</h2>"
 
     html = f"""
+    <!DOCTYPE html>
     <html>
     <head>
         <title>Ayurvedic Remedy</title>
         <link href='https://fonts.googleapis.com/css2?family=Inter&display=swap' rel='stylesheet'>
         <style>
             body {{
-                background: url('https://t3.ftcdn.net/jpg/12/15/65/08/360_F_1215650842_rsCDeAP7zfX9go3kQTcWYq8fjyVhfhQX.jpg') no-repeat center center fixed;
-                background-size: cover;
-                font-family: 'Inter', sans-serif;
+                margin: 0;
                 padding: 50px;
+                font-family: 'Inter', sans-serif;
+                background: url('https://static.vecteezy.com/system/resources/previews/043/994/048/non_2x/ai-generated-theme-of-healthy-and-natural-traditional-chinese-medicine-photo.jpg') no-repeat center center fixed;
+                background-size: cover;
             }}
-            .box {{
-                background: rgba(255, 255, 255, 0.95);
-                border-radius: 12px;
-                padding: 30px;
-                max-width: 800px;
+
+            .overlay {{
+                background-color: rgba(255, 255, 255, 0.55);
+                backdrop-filter: blur(10px);
+                border-radius: 16px;
+                padding: 30px 40px;
+                max-width: 850px;
                 margin: auto;
-                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            }}
+            .images {{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }}
+            .images img:hover {{
+                transform: scale(1.05);
+                transition: transform 0.3s ease;
             }}
             .header-buttons {{
                 display: flex;
                 justify-content: flex-end;
-                gap: 10px;
-                margin-bottom: 20px;
+                gap: 15px;
+                margin-bottom: 25px;
             }}
             .btn {{
-                background: #2e7d32;
+                background-color: #2e7d32;
                 color: white;
-                padding: 10px 20px;
-                border-radius: 25px;
-                text-decoration: none;
-                font-weight: bold;
+                padding: 10px 22px;
+                border-radius: 30px;
+                font-weight: 600;
                 border: none;
+                text-decoration: none;
+                transition: background 0.3s ease, transform 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 3px 6px rgba(0,0,0,0.1);
             }}
-            h1 {{ color: #1b5e20; }}
+            .btn:hover {{
+                background-color: #1b5e20;
+                transform: translateY(-2px);
+            }}
+            h1 {{
+                color: #1b5e20;
+                font-size: 32px;
+                margin-bottom: 10px;
+            }}
+            p {{
+                font-size: 18px;
+                margin: 5px 0;
+            }}
+            h2 {{
+                font-size: 24px;
+                margin-top: 30px;
+                color: black;
+            }}
             .remedy-step {{
                 background: #f1f8e9;
                 border-left: 5px solid #66bb6a;
                 margin: 10px 0;
-                padding: 10px 15px;
+                padding: 12px 18px;
                 border-radius: 6px;
+                font-size: 16px;
             }}
             .images img {{
                 width: 130px;
@@ -243,13 +279,13 @@ def result():
         </style>
     </head>
     <body>
-        <div class='box'>
+        <div class="overlay">
             <div class="header-buttons">
-                <a href="/" class="btn">🔙 Back</a>
+                <a href="/" class="btn">🔙 <span>Back</span></a>
                 <form action="/download" method="POST">
                     <input type="hidden" name="disease" value="{disease}">
                     <input type="hidden" name="age" value="{age}">
-                    <button type="submit" class="btn">📄 Download PDF</button>
+                    <button type="submit" class="btn">📄 <span>Download PDF</span></button>
                 </form>
             </div>
             <h1>Ayurvedic Remedy</h1>
@@ -257,17 +293,22 @@ def result():
             <p><strong>Season:</strong> {matches.iloc[0]['Season']}</p>
             <h2>Remedy Steps:</h2>
     """
+
+    # Add remedy steps
     step_no = 1
     for step in re.split(r'\d\)|\.', matches.iloc[0]['Remedies']):
         if step.strip():
             html += f"<div class='remedy-step'>Step {step_no}: {step.strip()}</div>"
             step_no += 1
 
+    # Add ingredient images
     html += "<h2>Ingredient Images:</h2><div class='images'>"
     for img in matches.iloc[0]['Image URL'].split(';'):
-        html += f"<img src='{img.strip()}' alt='ingredient'/>"
+        html += f"<img src='{img.strip()}' alt='Ingredient'/>"
     html += "</div></div></body></html>"
+
     return html
+
 @app.route('/download', methods=['POST'])
 def download():
     disease = request.form['disease'].strip().lower()
