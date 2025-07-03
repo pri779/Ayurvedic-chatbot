@@ -21,156 +21,155 @@ def check_age_group(age_group_str, age):
 @app.route('/')
 def index():
     return """
-        <html>
-    <head>
-        <title>Ayurvedic Chatbot</title>
-        <link href="https://fonts.googleapis.com/css2?family=Inter&family=Dancing+Script&display=swap" rel="stylesheet">
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                background-image: url('https://img.freepik.com/premium-photo/harmony-tradition-embracing-indian-ayurveda-through-minimalistic-background-images-powerpoi_983420-27736.jpg');
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-position: center;
-                height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-family: 'Inter', sans-serif;
-            }
+<html>
+<head>
+    <title>Ayurvedic Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Dancing+Script&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://img.freepik.com/premium-photo/ayurveda-india-symbol-background_1279562-9399.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+        }
 
-            .overlay {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 40px 30px;
-    border-radius: 18px;
-    color: white;
-    text-align: left;
-    width: 430px;
-    min-height: 440px;     /* ✅ more space */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 40px 30px;
+            border-radius: 18px;
+            color: #fff3e9;
+            text-align: left;
+            width: 430px;
+            min-height: 440px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-            .quote {
-                font-family: 'Dancing Script', cursive;
-                font-size: 20px;
-                text-align: center;
-                margin-bottom: 10px;
-            }
+        .quote {
+            font-family: 'Dancing Script', cursive;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #ffecd1;
+        }
 
-            h1 {
-                text-align: center;
-                color: #ff4d4d;
-                margin-bottom: 25px;
-            }
+        h1 {
+            text-align: center;
+            color:white;/* ✅ Green */
+            margin-bottom: 25px;
+        }
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;               /* ✅ more gap between fields */
-    align-items: center;
-}
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
 
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 280px;
+            margin-left: 10px;
+        }
 
+        .input-group input[type="text"],
+        .input-group input[type="number"],
+        input[type="number"] {
+            flex: 1;
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            box-shadow: 0 0 4px rgba(255,255,255,0.2);
+        }
 
- .input-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 280px;
-    margin-left: 10px;  /* ✅ slight right shift */
-}
+        ::placeholder {
+            color: #ffe9d5;
+            opacity: 0.9;
+        }
 
-.input-group input[type="text"],
-.input-group input[type="number"],
-input[type="number"] {
-    flex: 1;
-    padding: 12px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: none;
-    box-shadow: 0 0 4px rgba(255,255,255,0.2);
-}
+        .voice-btn {
+            padding: 12px;
+            background-color: #2e7d32; /* ✅ Mic button greenish */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            height: 40px;
+            width: 40px;
+        }
 
+        button[type="submit"] {
+            width: 180px;
+            padding: 12px;
+            background-color: #2e7d32; /* ✅ Green button */
+            color: white;
+            border: none;
+            font-size: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            align-self: center;
+            margin-top: 10px;
+        }
 
+        button[type="submit"]:hover {
+            background-color: #1b5e20;
+        }
 
-            input[type="text"], input[type="number"] {
-                width: 260px;
-                padding: 11px;
-                font-size: 14px;
-                border-radius: 6px;
-                border: none;
-                box-shadow: 0 0 4px rgba(255,255,255,0.2);
-            }
+        .loader {
+            display: none;
+            color: white;
+            margin-top: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <div class="quote">"Health is the greatest gift, contentment the greatest wealth."</div>
+        <h1>Ayurvedic Chatbot</h1>
+        <form action="/result" method="POST" onsubmit="showLoader()">
+            <div class="input-group">
+                <input type="text" name="disease" id="disease" placeholder="Enter Your Disease..." required>
+                <button type="button" class="voice-btn" onclick="startVoice()">🎤</button>
+            </div>
+            <div class="input-group">
+                <input type="number" name="age" placeholder="Enter Your Age..." required>
+            </div>
+            <button type="submit">Get Remedy</button>
+        </form>
+        <div class="loader" id="loader">⏳ Loading remedy...</div>
+    </div>
 
-            .voice-btn {
-                padding: 12px;
-                background-color: #e74c3c;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                color: white;
-                height: 40px;
-                width: 40px;
-            }
+    <script>
+        function startVoice() {
+            var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-IN';
+            recognition.start();
+            recognition.onresult = function(event) {
+                document.getElementById('disease').value = event.results[0][0].transcript;
+            };
+        }
 
-            button[type="submit"] {
-                width: 180px;
-                padding: 12px;
-                background-color: #e74c3c;
-                color: white;
-                border: none;
-                font-size: 15px;
-                border-radius: 6px;
-                cursor: pointer;
-                align-self: center;
-                margin-top: 10px;
-            }
+        function showLoader() {
+            document.getElementById('loader').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
 
-            .loader {
-                display: none;
-                color: white;
-                margin-top: 12px;
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="overlay">
-            <div class="quote">"Health is the greatest gift, contentment the greatest wealth."</div>
-            <h1>Ayurvedic Chatbot</h1>
-            <form action="/result" method="POST" onsubmit="showLoader()">
-                <div class="input-group">
-    <input type="text" name="disease" id="disease" placeholder="Enter Your Disease..." required>
-    <button type="button" class="voice-btn" onclick="startVoice()">🎤</button>
-</div>
-<div class="input-group">
-    <input type="number" name="age" placeholder="Enter Your Age..." required>
-</div>
-
-     <button type="submit">Get Remedy</button>
-            </form>
-            <div class="loader" id="loader">⏳ Loading remedy...</div>
-        </div>
-
-        <script>
-            function startVoice() {
-                var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-                recognition.lang = 'en-IN';
-                recognition.start();
-                recognition.onresult = function(event) {
-                    document.getElementById('disease').value = event.results[0][0].transcript;
-                };
-            }
-
-            function showLoader() {
-                document.getElementById('loader').style.display = 'block';
-            }
-        </script>
-    </body>
-    </html>
 
     """
 
