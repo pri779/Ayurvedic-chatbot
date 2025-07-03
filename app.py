@@ -176,7 +176,6 @@ input[type="number"] {
 
 
 
-
 @app.route('/result', methods=['POST'])
 def result():
     disease = request.form['disease'].strip().lower()
@@ -201,12 +200,11 @@ def result():
                 margin: 0;
                 padding: 50px;
                 font-family: 'Inter', sans-serif;
-                background: url('https://static.vecteezy.com/system/resources/previews/043/994/048/non_2x/ai-generated-theme-of-healthy-and-natural-traditional-chinese-medicine-photo.jpg') no-repeat center center fixed;
+                background: url('https://i.pinimg.com/736x/5f/4b/52/5f4b52469868262ddb70c68765969995.jpg') no-repeat center center fixed;
                 background-size: cover;
             }}
-
             .overlay {{
-                background-color: rgba(255, 255, 255, 0.55);
+                background-color: rgba(255, 255, 255, 0.4);
                 backdrop-filter: blur(10px);
                 border-radius: 16px;
                 padding: 30px 40px;
@@ -291,6 +289,7 @@ def result():
             <h1>Ayurvedic Remedy</h1>
             <p><strong>Disease:</strong> {disease.title()}</p>
             <p><strong>Season:</strong> {matches.iloc[0]['Season']}</p>
+
             <h2>Remedy Steps:</h2>
     """
 
@@ -301,13 +300,14 @@ def result():
             html += f"<div class='remedy-step'>Step {step_no}: {step.strip()}</div>"
             step_no += 1
 
-    # Add ingredient images
+    # Add images
     html += "<h2>Ingredient Images:</h2><div class='images'>"
     for img in matches.iloc[0]['Image URL'].split(';'):
         html += f"<img src='{img.strip()}' alt='Ingredient'/>"
     html += "</div></div></body></html>"
 
     return html
+
 
 @app.route('/download', methods=['POST'])
 def download():
